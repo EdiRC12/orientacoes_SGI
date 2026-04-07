@@ -12,29 +12,111 @@
             width: 100%;
             overflow: hidden;
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
-        /* Container que força o iOS a criar rolagem */
-        .iframe-container {
+
+        /* Estilos do Iframe (Para Android e PC) */
+        #iframe-container {
             width: 100%;
             height: 100%;
             overflow: auto;
-            -webkit-overflow-scrolling: touch; /* Essencial para iPhone */
+            -webkit-overflow-scrolling: touch;
         }
         iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
+
+        /* Estilos da Tela de Download (Exclusivo para iPhone/iOS) */
+        #ios-container {
+            display: none; /* Fica escondido por padrão */
+            height: 100%;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #ffffff;
+        }
+
+        #ios-container h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #ios-container p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        /* O Botão Gigante */
+        .btn-gigante {
+            display: inline-block;
+            background-color: #0056b3; /* Azul escuro */
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .btn-gigante:active {
+            background-color: #004494;
+            transform: translateY(2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
 
-    <div class="iframe-container">
+    <!-- CONTAINER DO IFRAME (Aparece no Android/PC) -->
+    <div id="iframe-container">
         <iframe src="https://edirc12.github.io/orientacoes_SGI/APRESENTA%C3%87%C3%83O%20SGI.pdf">
             Seu navegador não suporta a visualização de PDFs. 
-            <a href="https://edirc12.github.io/orientacoes_SGI/APRESENTA%C3%87%C3%83O%20SGI.pdf">Clique aqui para baixar.</a>
         </iframe>
     </div>
+
+    <!-- CONTAINER DO IPHONE (Aparece apenas no iOS) -->
+    <div id="ios-container">
+        <h2>Apresentação SGI</h2>
+        <p>Para a melhor experiência no seu iPhone, abra o documento diretamente clicando no botão abaixo.</p>
+        <a href="https://edirc12.github.io/orientacoes_SGI/APRESENTA%C3%87%C3%83O%20SGI.pdf" target="_blank" class="btn-gigante">
+            📄 ABRIR PDF
+        </a>
+    </div>
+
+    <!-- SCRIPT PARA DETECTAR O IPHONE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Função para detectar se é iOS (iPhone, iPad, iPod)
+            function isIOS() {
+                // Verifica pelo User Agent
+                var isIosDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                
+                // Verifica iPads mais novos (que se identificam como Mac)
+                if (!isIosDevice && navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) {
+                    isIosDevice = true;
+                }
+                
+                return isIosDevice;
+            }
+
+            // Se for iOS, esconde o iframe e mostra o botão gigante
+            if (isIOS()) {
+                document.getElementById('iframe-container').style.display = 'none';
+                document.getElementById('ios-container').style.display = 'flex';
+            }
+        });
+    </script>
 
 </body>
 </html>
